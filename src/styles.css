@@ -1,1 +1,54 @@
-/* You can add global styles to this file, and also import other style files */
+/* Dark Theme */
+body {
+  background-color: #121212;
+  color: #ffffff; /* Changed to white for better contrast */
+}
+
+/* Custom Card Style */
+.card {
+  background-color: #1e1e1e;
+  border: none;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  color: #ffffff; /* Ensure card text is white */
+}
+
+.card-header {
+  background-color: #2e2e2e;
+  border-bottom: none;
+  border-radius: 10px 10px 0 0;
+  color: #ffffff; /* Ensure header text is white */
+}
+
+.card-body {
+  padding: 2rem;
+}
+
+.btn-primary {
+  background-color: #6200ea;
+  border: none;
+  transition: background-color 0.3s ease;
+  color: #ffffff; /* Ensure button text is white */
+}
+
+.btn-primary:hover {
+  background-color: #3700b3;
+}
+
+/* Global Dark Theme Adjustments */
+.navbar, .footer {
+  background-color: #1e1e1e;
+  color: #ffffff; /* Ensure navbar and footer text is white */
+}
+
+.navbar-brand, .nav-link {
+  color: #ffffff !important; /* Ensure navbar link text is white */
+}
+
+a {
+  color: #bb86fc;
+}
+
+a:hover {
+  color: #3700b3;
+}
