@@ -1,0 +1,22 @@
+<div class="container mt-4">
+  <h2>Add New Category</h2>
+  <form (ngSubmit)="handleSubmit(category)">
+    <div class="mb-3">
+      <label for="categoryName" class="form-label">Category Name - {{ category.name }}</label>
+      <input id="categoryName" name="categoryName"
+             type="text" class="form-control"
+             [(ngModel)]="category.name"
+      >
+    </div>
+
+    <div class="mb-3">
+      <label for="categoryName" class="form-label">Category URL</label>
+      <input id="categoryUrl" name="categoryUrl"
+             type="text" class="form-control"
+             [(ngModel)]="category.urlHandle">
+    </div>
+
+    <button type="submit" class="btn btn-primary">Add Category</button>
+    <button type="button" class="btn btn-secondary" [routerLink]="['/admin/categories']">Cancel</button>
+  </form>
+</div>
