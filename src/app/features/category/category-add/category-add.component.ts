@@ -1,8 +1,9 @@
-import {Component} from '@angular/core';
-import {RouterLink} from "@angular/router";
-import {Category} from "../../../models/category";
-import {FormsModule} from "@angular/forms";
-import {CategoryService} from "../../../services/category.service";
+import {Component, OnDestroy} from '@angular/core';
+import {RouterLink} from '@angular/router';
+import {Category} from '../../../models/category';
+import {FormsModule} from '@angular/forms';
+import {CategoryService} from '../../../services/category.service';
+import {Subscription} from 'rxjs';
 
 @Component({
   selector: 'app-category-add',
@@ -13,21 +14,36 @@ import {CategoryService} from "../../../services/category.service";
   ],
   providers: [],
   templateUrl: './category-add.component.html',
-  styleUrl: './category-add.component.css'
+  styleUrls: ['./category-add.component.css']
 })
-export class CategoryAddComponent {
+export class CategoryAddComponent implements OnDestroy {
+  // Initialize a new category object for form handling
   category: Category = new Category();
+  private categorySubscription?: Subscription;
 
   constructor(private categoryService: CategoryService) {
   }
 
+  ngOnDestroy() {
+    // Clean up subscription to avoid memory leaks
+    this.categorySubscription?.unsubscribe();
+    console.log('CategoryAddComponent destroyed');
+  }
+
   handleSubmit(obj: Category) {
-    console.log(obj);
-    this.categoryService.addCategory(obj)
+    console.log('Submitting category:', obj);
+    // this.categoryService.subscribe(this.categoryService.addCategory(obj));
+    this.categorySubscription = this.categoryService.addCategory(obj)
       .subscribe({
-        next: (res) => {},
-        error: err => {}
-      })
-    ;
+        next: (response) => {
+          console.log('Category added successfully:', response);
+        },
+        error: (err) => {
+          console.error('Error adding category:', err);
+        },
+        complete: () => {
+          console.log('Categories added successfully');
+        }
+      });
   }
 }

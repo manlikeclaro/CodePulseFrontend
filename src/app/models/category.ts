@@ -7,7 +7,7 @@ export interface CategoryInterface {
 // Implement the Category interface with a class
 export class Category implements CategoryInterface {
   constructor(
-    public name: string = 'Wrestling',
-    public urlHandle: string = 'wrestling'
+    public name: string = '',
+    public urlHandle: string = ''
   ) {}
 }
