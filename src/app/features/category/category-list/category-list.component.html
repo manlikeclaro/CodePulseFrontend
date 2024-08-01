@@ -1,15 +1,38 @@
-<div class="container mt-4">
-  <div class="d-flex justify-content-between align-items-center">
-    <h2>Categories</h2>
-    <a class="btn btn-primary" [routerLink]="['/admin/categories/add']">Add New Category</a>
+<div class="container mt-5">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h1 class="h2">Categories</h1>
+    <a class="btn btn-primary rounded-3" [routerLink]="['/admin/categories/add']">
+      <i class="bi bi-plus-lg me-2"></i>Add New Category
+    </a>
   </div>
-  <ul class="list-group mt-3">
-    @if (categories?.length) {
+
+  @if (categories?.length) {
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
       @for (category of categories; track category) {
-        <li class="list-group-item">{{ category.name }} - {{ category.urlHandle }}</li>
+        <div class="col">
+          <div class="card shadow-sm rounded-3">
+            <div class="card-body">
+              <h5 class="card-title">{{ category.name }}</h5>
+              <p class="card-text"><strong>URL Handle:</strong> {{ category.urlHandle }}</p>
+              <div class="d-flex justify-content-end">
+                <a class="btn btn-outline-secondary btn-sm mx-2 rounded-3">
+                  <!--                   [routerLink]="['/admin/categories/edit', category.id]-->
+                  <i class="bi bi-pencil me-1"></i>Edit
+                </a>
+                <button class="btn btn-outline-danger btn-sm rounded-3">
+                  <!--                  (click)="deleteCategory(category.id)"-->
+                  <i class="bi bi-trash me-1"></i>Delete
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
       }
-    } @else {
-      <h3 class="display-3">No categories to display</h3>
-    }
-  </ul>
+    </div>
+  } @else {
+    <div class="alert alert-warning mt-4 rounded-3" role="alert">
+      <h4 class="alert-heading">No categories to display</h4>
+      <p>There are currently no categories available. Click the "Add New Category" button to create one.</p>
+    </div>
+  }
 </div>

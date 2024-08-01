@@ -1,22 +1,33 @@
-<div class="container mt-4">
-  <h2>Add New Category</h2>
-  <form (ngSubmit)="handleSubmit(category)">
-    <div class="mb-3">
-      <label for="categoryName" class="form-label">Category Name - {{ category.name }}</label>
-      <input id="categoryName" name="categoryName"
-             type="text" class="form-control"
-             [(ngModel)]="category.name"
-      >
-    </div>
+<div class="container mt-5">
+  <h2 class="h4 mb-2 text-center">Add New Category</h2>
+  <div class="row justify-content-center">
+    <div class="col-md-8 card shadow-sm rounded-3">
+      <div class="card-body">
+        <form (ngSubmit)="handleSubmit(category)">
+          <div class="mb-3">
+            <label for="categoryName" class="form-label">Category Name</label>
+            <input id="categoryName" name="categoryName"
+                   type="text" class="form-control rounded-3"
+                   [(ngModel)]="category.name">
+          </div>
 
-    <div class="mb-3">
-      <label for="categoryName" class="form-label">Category URL</label>
-      <input id="categoryUrl" name="categoryUrl"
-             type="text" class="form-control"
-             [(ngModel)]="category.urlHandle">
-    </div>
+          <div class="mb-3">
+            <label for="categoryUrl" class="form-label">Category URL</label>
+            <input id="categoryUrl" name="categoryUrl"
+                   type="text" class="form-control rounded-3"
+                   [(ngModel)]="category.urlHandle">
+          </div>
 
-    <button type="submit" class="btn btn-primary">Add Category</button>
-    <button type="button" class="btn btn-secondary" [routerLink]="['/admin/categories']">Cancel</button>
-  </form>
+          <div class="d-flex justify-content-end">
+            <button type="submit" class="btn btn-primary btn-sm rounded-3">
+              <i class="bi bi-plus-lg me-2"></i>Add Category
+            </button>
+            <a class="btn btn-secondary btn-sm rounded-3" [routerLink]="['/admin/categories']">
+              <i class="bi bi-x-lg me-2"></i>Cancel
+            </a>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
 </div>

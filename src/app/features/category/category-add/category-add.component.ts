@@ -1,5 +1,5 @@
 import {Component, OnDestroy} from '@angular/core';
-import {RouterLink} from '@angular/router';
+import {Router, RouterLink} from '@angular/router';
 import {Category} from '../../../models/category';
 import {FormsModule} from '@angular/forms';
 import {CategoryService} from '../../../services/category.service';
@@ -21,7 +21,10 @@ export class CategoryAddComponent implements OnDestroy {
   category: Category = new Category();
   private categorySubscription?: Subscription;
 
-  constructor(private categoryService: CategoryService) {
+  constructor(
+    private categoryService: CategoryService,
+    private router: Router,
+  ) {
   }
 
   ngOnDestroy() {
@@ -43,6 +46,8 @@ export class CategoryAddComponent implements OnDestroy {
         },
         complete: () => {
           console.log('Categories added successfully');
+          this.router.navigateByUrl('/admin/categories')
+            .then(r => r);
         }
       });
   }
