@@ -16,6 +16,10 @@ export class CategoryService {
     return this.http.get(`${environment.apiUrl}/categories`);
   }
 
+  getCategory(id: string) {
+    return this.http.get(`${environment.apiUrl}/categories/${id}`);
+  }
+
   addCategory(obj: Category): Observable<object> {
     return this.http.post(`${environment.apiUrl}/categories`, obj);
   }

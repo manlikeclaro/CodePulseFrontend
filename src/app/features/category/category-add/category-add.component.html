@@ -4,6 +4,7 @@
     <div class="col-md-8 card shadow-sm rounded-3">
       <div class="card-body">
         <form (ngSubmit)="handleSubmit(category)">
+          <input [(ngModel)]="category.id" hidden>
           <div class="mb-3">
             <label for="categoryName" class="form-label">Category Name</label>
             <input id="categoryName" name="categoryName"
