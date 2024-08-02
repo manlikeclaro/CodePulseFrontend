@@ -14,14 +14,12 @@ import {CategoryUpdate} from "../../../models/category-update";
     RouterLink
   ],
   templateUrl: './category-edit.component.html',
-  styleUrl: './category-edit.component.css'
+  styleUrls: ['./category-edit.component.css']
 })
 export class CategoryEditComponent implements OnInit, OnDestroy {
   id: string | null = null;
-  paramsSubscription?: Subscription;
-  updateSubscription?: Subscription;
-
   category?: Category;
+  private subscriptions: Subscription = new Subscription(); // Manage subscriptions
 
   constructor(
     private categoryService: CategoryService,
@@ -31,45 +29,52 @@ export class CategoryEditComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.paramsSubscription = this.route.paramMap
-      .subscribe({
-        next: (params) => {
-          this.id = params.get("id");
+    // Subscribe to route parameters to get the category ID
+    const paramsSubscription = this.route.paramMap.subscribe({
+      next: (params) => {
+        this.id = params.get("id");
 
-          if (this.id) {
-            this.categoryService.getCategory(this.id)
-              .subscribe({
-                next: (response) => {
-                  // @ts-ignore
-                  this.category = response.data;
-                }
-              })
-          }
+        if (this.id) {
+          // Fetch category details using the ID
+          const categorySubscription = this.categoryService.getCategory(this.id).subscribe({
+            next: (response) => {
+              // @ts-ignore
+              this.category = response.data;
+            },
+            error: (err) => {
+              console.error('Error fetching category:', err);
+            }
+          });
+          this.subscriptions.add(categorySubscription);
         }
-      })
+      },
+      error: (err) => {
+        console.error('Error with route parameters:', err);
+      }
+    });
+    this.subscriptions.add(paramsSubscription);
   }
 
   ngOnDestroy() {
-    this.paramsSubscription?.unsubscribe();
-    this.updateSubscription?.unsubscribe();
+    // Unsubscribe from all subscriptions
+    this.subscriptions.unsubscribe();
   }
 
   handleSubmit(obj: Category) {
     const updatedCategory = new CategoryUpdate(obj.name, obj.urlHandle);
-    console.log('Submitting category:', updatedCategory);
 
-    this.updateSubscription = this.categoryService.updateCategory(obj.id, updatedCategory)
-      .subscribe({
-        next: (response) => {
-          console.log('Category updated successfully:', response);
-        },
-        error: (err) => {
-          console.error('Error updating category:', err);
-        },
-        complete: () => {
-          this.router.navigateByUrl('/admin/categories')
-            .then(r => r);
-        }
-      })
+    const updateSubscription = this.categoryService.updateCategory(obj.id, updatedCategory).subscribe({
+      next: (response) => {
+        console.log('Submitting category:', updatedCategory);
+      },
+      error: (err) => {
+        console.error('Error updating category:', err);
+      },
+      complete: () => {
+        console.log('Category updated successfully:');
+        this.router.navigateByUrl('/admin/categories');
+      }
+    });
+    this.subscriptions.add(updateSubscription);
   }
 }

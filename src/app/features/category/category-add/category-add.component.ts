@@ -1,9 +1,9 @@
 import {Component, OnDestroy} from '@angular/core';
 import {Router, RouterLink} from '@angular/router';
-import {Category} from '../../../models/category';
 import {FormsModule} from '@angular/forms';
 import {CategoryService} from '../../../services/category.service';
 import {Subscription} from 'rxjs';
+import {CategoryCreate} from '../../../models/category-create';
 
 @Component({
   selector: 'app-category-add',
@@ -17,9 +17,8 @@ import {Subscription} from 'rxjs';
   styleUrls: ['./category-add.component.css']
 })
 export class CategoryAddComponent implements OnDestroy {
-  // Initialize a new category object for form handling
-  category: Category = new Category();
-  private categorySubscription?: Subscription;
+  category: CategoryCreate = new CategoryCreate(); // Initialize a new category object for form handling
+  private categorySubscription: Subscription = new Subscription(); // Manage subscriptions
 
   constructor(
     private categoryService: CategoryService,
@@ -29,26 +28,25 @@ export class CategoryAddComponent implements OnDestroy {
 
   ngOnDestroy() {
     // Clean up subscription to avoid memory leaks
-    this.categorySubscription?.unsubscribe();
+    this.categorySubscription.unsubscribe();
     console.log('CategoryAddComponent destroyed');
   }
 
-  handleSubmit(obj: Category) {
-    console.log('Submitting category:', obj);
-    // this.categoryService.subscribe(this.categoryService.addCategory(obj));
-    this.categorySubscription = this.categoryService.addCategory(obj)
-      .subscribe({
-        next: (response) => {
-          console.log('Category added successfully:', response);
-        },
-        error: (err) => {
-          console.error('Error adding category:', err);
-        },
-        complete: () => {
-          console.log('Categories added successfully');
-          this.router.navigateByUrl('/admin/categories')
-            .then(r => r);
-        }
-      });
+  handleSubmit(obj: CategoryCreate) {
+    const addCategorySubscription = this.categoryService.addCategory(obj).subscribe({
+      next: (response) => {
+        console.log('Submitting category:', response);
+      },
+      error: (err) => {
+        console.error('Error adding category:', err);
+      },
+      complete: () => {
+        console.log('Category added successfully');
+        this.router.navigateByUrl('/admin/categories');
+      }
+    });
+
+    // Add subscription to the collection
+    this.categorySubscription.add(addCategorySubscription);
   }
 }
